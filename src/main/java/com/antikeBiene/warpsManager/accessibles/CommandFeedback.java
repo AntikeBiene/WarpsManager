@@ -330,7 +330,7 @@ public class CommandFeedback {
         this.message.append(text("Waypoint ", descC()))
                 .append(fWaypoint(wp))
                 .append(text(" is being killed in ", descC()))
-                .append(text(killedIn, varC()))
+                .append(text((int) killedIn, varC()))
                 .append(text(" days at ", descC()))
                 .append(text(formatEpochSecs(killedAt), varC()))
                 .append(text(".", descC()));

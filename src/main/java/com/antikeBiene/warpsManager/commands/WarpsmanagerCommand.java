@@ -1,5 +1,6 @@
 package com.antikeBiene.warpsManager.commands;
 
+import com.antikeBiene.warpsManager.WarpsManager;
 import com.antikeBiene.warpsManager.accessibles.BukkitPerm;
 import com.antikeBiene.warpsManager.accessibles.CommandFeedback;
 import com.antikeBiene.warpsManager.services.ConfigurationService;
@@ -17,6 +18,7 @@ public class WarpsmanagerCommand {
                 .requires(sender -> sender.getSender().hasPermission(BukkitPerm.ADMIN))
                 .then(Commands.literal("reload")
                         .executes(ctx -> {
+                            WarpsManager.getPlugin().reloadConfig();
                             ConfigurationService.init();
                             WarpsService.saveData();
                             WaypointsService.saveData();

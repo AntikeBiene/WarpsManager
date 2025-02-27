@@ -14,7 +14,7 @@ public class WpCommand {
 
     public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("wp")
-                .then(Commands.argument("id", StringArgumentType.string())
+                .then(Commands.argument("id", StringArgumentType.word())
                         .suggests((ctx, builder) -> {
                             for (String wpid : WaypointsService.getAllWaypoints().keySet())
                                 if (wpid.toLowerCase().startsWith(builder.getRemainingLowerCase()))

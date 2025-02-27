@@ -21,7 +21,8 @@ public class ConfigurationService {
 
     public static NamedTextColor getColor(String caseID) {
         String colorString = config.getString("message-" + caseID);
-        return NamedTextColor.NAMES.valueOr(colorString, NamedTextColor.WHITE);
+        if (colorString == null) colorString = "white";
+        return NamedTextColor.NAMES.valueOr(colorString.toLowerCase(), NamedTextColor.WHITE);
     }
 
     public static Integer getStandardWaypointLifetime() {

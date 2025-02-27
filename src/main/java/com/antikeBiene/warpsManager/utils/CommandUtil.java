@@ -13,19 +13,18 @@ public class CommandUtil {
 
     public static CompletableFuture<Suggestions> warpKeySuggestion(SuggestionsBuilder builder) {
         String input = builder.getRemainingLowerCase();
-        String[] data = input.split(":");
+        String[] data = input.split("\\.");
         if (data.length == 2) {
             for (String warpID : WarpsService.getGroupList(data[0]))
                 if (warpID.toLowerCase().startsWith(data[1]))
-                    builder.suggest(data[0] + ":" + warpID);
-        } else if (input.endsWith(":") && data.length == 1) {
-            for (String warpID : WarpsService.getGroupList(input))
-                builder.suggest(input + ":" + warpID);
+                    builder.suggest(data[0] + "." + warpID);
+        } else if (input.endsWith(".")) {
+            for (String warpID : WarpsService.getGroupList(data[0]))
+                builder.suggest(input + warpID);
         } else if (data.length == 1) {
-            for (String groupID : WarpsService.getAllGroupIds()) {
+            for (String groupID : WarpsService.getAllGroupIds())
                 if (groupID.toLowerCase().startsWith(input))
-                    builder.suggest(groupID + ":");
-            }
+                    builder.suggest(groupID + ".");
             for (String warpID : WarpsService.getAllWarpIds())
                 if (warpID.toLowerCase().startsWith(input))
                     builder.suggest(warpID);
@@ -35,7 +34,7 @@ public class CommandUtil {
 
     public static String getID(CommandContext<CommandSourceStack> ctx) {
         String input = ctx.getArgument("key", String.class).toLowerCase();
-        String[] data = input.split(":");
+        String[] data = input.split("\\.");
         String id;
         if (data.length == 1) {
             id = data[0];

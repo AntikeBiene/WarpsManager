@@ -32,7 +32,7 @@ public class SetwarpCommand {
                         })
                         .executes(ctx -> {
                             Entity executor = ctx.getSource().getExecutor();
-                            String id = ctx.getArgument("id", String.class).toLowerCase();
+                            String id = ctx.getArgument("id", String.class).toLowerCase().replace(".", "_");
                             TextComponent.Builder standardComponent = text()
                                     .append(text("You've been warped to ", ConfigurationService.getColor("positive")))
                                     .append(text(id, ConfigurationService.getColor("warp"), TextDecoration.ITALIC))
@@ -40,7 +40,7 @@ public class SetwarpCommand {
                             Warp newWarp = new Warp(
                                     executor.getLocation(),
                                     ctx.getSource().getSender().getName(),
-                                    ctx.getArgument("group", String.class).toLowerCase(),
+                                    ctx.getArgument("group", String.class).toLowerCase().replace(".", "_"),
                                     JSONComponentSerializer.json().serialize(standardComponent.build())
                             );
                             if (WarpsService.addWarp(id, newWarp)) {

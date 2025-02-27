@@ -15,7 +15,7 @@ public class WarpCommand {
 
     public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("warp")
-                .then(Commands.argument("key", StringArgumentType.string())
+                .then(Commands.argument("key", StringArgumentType.word())
                         .suggests((ctx, builder) -> CommandUtil.warpKeySuggestion(builder))
                         .executes(ctx -> {
                             String id = CommandUtil.getID(ctx);
