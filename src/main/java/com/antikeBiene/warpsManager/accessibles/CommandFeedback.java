@@ -3,6 +3,7 @@ package com.antikeBiene.warpsManager.accessibles;
 import com.antikeBiene.warpsManager.models.Warp;
 import com.antikeBiene.warpsManager.models.Waypoint;
 import com.antikeBiene.warpsManager.services.*;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.TextComponent;
@@ -394,6 +395,16 @@ public class CommandFeedback {
                 .append(text(" expires in less than ", descC()))
                 .append(text(ConfigurationService.getWaypointReminder(), varC()))
                 .append(text(" days!", descC()));
+        return this;
+    }
+
+    public CommandFeedback DataLoaded() {
+        this.message.append(text("Data has been loaded from files.", posC()));
+        return this;
+    }
+
+    public CommandFeedback DataSaved() {
+        this.message.append(text("Data has been saved to files.", posC()));
         return this;
     }
 
