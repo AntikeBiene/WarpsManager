@@ -16,8 +16,6 @@ import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.entity.Entity;
 
 import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-import static net.kyori.adventure.text.format.NamedTextColor.YELLOW;
 
 public class SetwarpCommand {
 

@@ -58,9 +58,7 @@ public final class WarpsManager extends JavaPlugin {
         return warpsFile;
     }
 
-    public static  File getWaypointsFile() {
-        return waypointsFile;
-    }
+    public static  File getWaypointsFile() { return waypointsFile; }
 
     private static void registerCommands() {
         plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
@@ -77,6 +75,7 @@ public final class WarpsManager extends JavaPlugin {
             commands.registrar().register(WaypointsCommand.build());
             commands.registrar().register(WpdeathCommand.build());
             commands.registrar().register(WarpsmanagerCommand.build());
+            commands.registrar().register(WarplistCommand.build());
         });
     }
 }

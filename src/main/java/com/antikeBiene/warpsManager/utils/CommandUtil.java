@@ -43,7 +43,7 @@ public class CommandUtil {
             if (WarpsService.getGroupList(data[0]).contains(data[1])) {
                 id = data[1];
             } else {
-                CommandFeedback.to(ctx).WarpNotInGroup(data[1]).send();
+                CommandFeedback.to(ctx).WarpNotInGroup(data[1], data[0]).send();
                 return "";
             }
         } else {

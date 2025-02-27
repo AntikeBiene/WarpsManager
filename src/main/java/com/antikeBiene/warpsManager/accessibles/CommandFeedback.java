@@ -124,7 +124,7 @@ public class CommandFeedback {
                 if (currentEntry - 1 < pgStart) continue;
                 this.message.append(text("\n"))
                         .append(fWarp(name)
-                                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/warp " + name))
+                                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/warp " + warp.getGroupName() + ":" + name))
                                 .hoverEvent(HoverEvent.showText(text("Click to warp"))))
                         .append(text(" | in ", descC()))
                         .append(text(warp.getLocation().getWorld().getName(), varC()))
@@ -132,6 +132,45 @@ public class CommandFeedback {
                         .append(text(warp.getCreatedBy(), varC()));
             }
         }
+        return this;
+    }
+
+    public CommandFeedback ListAllWarps(Integer page) {
+        Integer totalSize = WarpsService.getAllWarpIds().size();
+        if (totalSize == 0) return this.NoWarps();
+        Integer pgSize = 8;
+        Integer pgStart = (page - 1) * pgSize;
+        Integer pgEnd = (page * pgSize) - 1;
+        Integer currentEntry = 0;
+        Integer totalPages = (int) Math.ceil((double) totalSize / pgSize);
+        if (totalPages < page || page < 1) return this.AccessingInvalidPage(page, totalPages);
+        this.message.append(text("All Warps (" + page + "/" + totalPages + ")", ntlC()));
+        for (Map.Entry<String, Warp> warpEntry : WarpsService.getAllWarps().entrySet()) {
+            Warp warp = warpEntry.getValue();
+            String name = warpEntry.getKey();
+            currentEntry++;
+            if (currentEntry - 1 > pgEnd) break;
+            if (currentEntry - 1 < pgStart) continue;
+            this.message.append(text("\n"))
+                    .append(fWarp(name)
+                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/warp " + warp.getGroupName() + ":" + name))
+                            .hoverEvent(HoverEvent.showText(text("Click to warp"))))
+                    .append(text(" (", descC()))
+                    .append(fGroup(warp.getGroupName())
+                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/warps " + warp.getGroupName()))
+                            .hoverEvent(HoverEvent.showText(text("Click to show all warps in group")))
+                    )
+                    .append(text(")", descC()))
+                    .append(text(" | in ", descC()))
+                    .append(text(warp.getLocation().getWorld().getName(), varC()))
+                    .append(text(" | by ", descC()))
+                    .append(text(warp.getCreatedBy(), varC()));
+        }
+        return this;
+    }
+
+    public CommandFeedback NoWarps() {
+        this.message.append(text("There are no Warps!", negC()));
         return this;
     }
 
@@ -306,18 +345,18 @@ public class CommandFeedback {
         if (listSize == 0) return this.NoWaypoints();
         Integer listPages = (int) Math.ceil((double) listSize / pgSize);
         if (listPages < page || listPages < 0) return this.AccessingInvalidPage(page, listPages);
-        this.message.append(text("Waypoints (" + page + "/" + listPages + ")\n", ntlC()));
+        this.message.append(text("Waypoints (" + page + "/" + listPages + ")", ntlC()));
         for (Map.Entry<String, Waypoint> wpEntry : WaypointsService.getAllWaypoints().entrySet()) {
             currentEntry++;
             if (currentEntry - 1 > pgEnd) break;
             if (currentEntry - 1 < pgStart) continue;
-            this.message.append(fWaypoint(wpEntry.getKey()))
+            this.message.appendNewline()
+                    .append(fWaypoint(wpEntry.getKey()))
                     .append(text(" (in ", descC()))
                     .append(text(wpEntry.getValue().getLocation().getWorld().getName(), varC()))
                     .append(text(" by ", descC()))
                     .append(text(wpEntry.getValue().getCreatedBy(), varC()))
                     .append(text(")", descC()));
-            if (currentEntry - 1 < pgEnd && currentEntry < listSize) this.message.append(text(" - ", descC()));
         }
         return this;
 
@@ -330,6 +369,31 @@ public class CommandFeedback {
 
     public CommandFeedback PluginReloaded() {
         this.message.append(text("WarpsManager has been reloaded!", posC(), TextDecoration.BOLD));
+        return this;
+    }
+
+    public CommandFeedback WarpNotInGroup(String id, String group) {
+        this.message.append(text("Warp ", negC()))
+                .append(fWarp(id))
+                .append(text(" is not part of group ", negC()))
+                .append(fGroup(group))
+                .append(text("!", negC()));
+        return this;
+    }
+
+    public CommandFeedback InvalidKey(String key) {
+        this.message.append(text("The key ", negC()))
+                .append(text(key, varC()))
+                .append(text(" does not redirect to any valid warp.", negC()));
+        return this;
+    }
+
+    public CommandFeedback WaypointExpires(String id) {
+        this.message.append(text("Your waypoint ", descC()))
+                .append(fWaypoint(id))
+                .append(text(" expires in less than ", descC()))
+                .append(text(ConfigurationService.getWaypointReminder(), varC()))
+                .append(text(" days!", descC()));
         return this;
     }
 

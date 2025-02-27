@@ -1,10 +1,7 @@
 package com.antikeBiene.warpsManager.models;
 
-import io.papermc.paper.math.BlockPosition;
 import org.bukkit.Location;
-import org.bukkit.World;
 
-import java.math.BigInteger;
 import java.time.Instant;
 
 public class Waypoint {
@@ -12,12 +9,14 @@ public class Waypoint {
     private Long created;
     private String createdBy;
     private Long killedAt;
+    private Boolean notifiedDeath;
 
-    public Waypoint(Location location, Long created, String createdBy, Long killedAt) {
+    public Waypoint(Location location, Long created, String createdBy, Long killedAt, Boolean notifiedDeath) {
         this.location = location;
         this.created = created;
         this.createdBy = createdBy;
         this.killedAt = killedAt;
+        this.notifiedDeath = notifiedDeath;
     }
 
     public Waypoint(Location location, String createdBy, Long killedIn) {
@@ -25,6 +24,7 @@ public class Waypoint {
         this.created = Instant.now().getEpochSecond();
         this.createdBy = createdBy;
         this.killedAt = killedIn + Instant.now().getEpochSecond();
+        this.notifiedDeath = false;
     }
 
 
@@ -68,7 +68,13 @@ public class Waypoint {
         setKilledAt(Instant.now().getEpochSecond());
     }
 
+    public Long getKilledIn() { return this.killedAt - Instant.now().getEpochSecond(); }
+
     public void setKilledIn(Long killedIn) {
         setKilledAt(killedIn + Instant.now().getEpochSecond());
     }
+
+    public Boolean getNotifiedDeath() { return notifiedDeath; }
+
+    public void setNotifiedDeath(Boolean notifiedDeath) { this.notifiedDeath = notifiedDeath; }
 }

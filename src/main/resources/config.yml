@@ -6,6 +6,9 @@ utc-offset: 0
 # Standard Lifetime for Waypoints (emitted on Creation)
 waypoint-standard-lifetime: 30
 
+# Days before Waypoint Deletion to remind creator of Waypoints death
+waypoint-death-reminder: 3
+
 # ++ Message Formatting Configuration ++
 # Available Colors:
 # BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_GRAY, BLUE, GREEN, AQUA, DARK_RED, DARK_PURPLE,

@@ -1,11 +1,13 @@
 package com.antikeBiene.warpsManager.services;
 
 import com.antikeBiene.warpsManager.WarpsManager;
+import com.antikeBiene.warpsManager.accessibles.CommandFeedback;
 import com.antikeBiene.warpsManager.models.Waypoint;
 import com.antikeBiene.warpsManager.modules.WarpsManagerGsonBuilderModule;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.io.*;
 import java.time.Instant;
@@ -13,14 +15,27 @@ import java.util.*;
 
 public class WaypointsService {
 
-    private static Map<String, Waypoint> waypoints = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private static Map<String, Waypoint> waypoints = new HashMap<>();
 
     public static void init() {
         Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(WarpsManager.getPlugin(), () -> {
             for (Map.Entry<String, Waypoint> wpEntry : WaypointsService.getAllWaypoints().entrySet()) {
-                if (wpEntry.getValue().getKilledAt() <= Instant.now().getEpochSecond()) WaypointsService.removeWaypoint(wpEntry.getKey());
+                if (wpEntry.getValue().getKilledIn() <= 0) WaypointsService.removeWaypoint(wpEntry.getKey());
             }
         }, 0, 20);
+
+        Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(WarpsManager.getPlugin(), () -> {
+            for (Map.Entry<String, Waypoint> wpEntry : WaypointsService.getAllWaypoints().entrySet()) {
+                if (wpEntry.getValue().getKilledIn() < (long) ConfigurationService.getWaypointReminder() * 24 * 3600
+                        && !wpEntry.getValue().getNotifiedDeath()) {
+                    Player creator = Bukkit.getPlayer(wpEntry.getValue().getCreatedBy());
+                        if (creator != null) {
+                            wpEntry.getValue().setNotifiedDeath(true);
+                            CommandFeedback.to(creator).WaypointExpires(wpEntry.getKey()).send();
+                        }
+                }
+            }
+        }, 0, 120 * 20);
     }
 
     public static void loadData() {

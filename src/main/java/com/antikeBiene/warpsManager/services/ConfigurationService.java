@@ -28,4 +28,8 @@ public class ConfigurationService {
         return config.getInt("waypoint-standard-lifetime");
     }
 
+    public static Integer getWaypointReminder() {
+        return config.getInt("waypoint-death-reminder");
+    }
+
 }
