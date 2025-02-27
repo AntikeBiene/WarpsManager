@@ -3,6 +3,7 @@ package com.antikeBiene.warpsManager.commands;
 import com.antikeBiene.warpsManager.accessibles.BukkitPerm;
 import com.antikeBiene.warpsManager.accessibles.CommandFeedback;
 import com.antikeBiene.warpsManager.models.Warp;
+import com.antikeBiene.warpsManager.services.ConfigurationService;
 import com.antikeBiene.warpsManager.services.WarpsService;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -34,7 +35,10 @@ public class SetwarpCommand {
                         .executes(ctx -> {
                             Entity executor = ctx.getSource().getExecutor();
                             String id = ctx.getArgument("id", String.class).toLowerCase();
-                            TextComponent.Builder standardComponent = text().append(text("You've been warped to ", GREEN)).append(text(id, YELLOW, TextDecoration.ITALIC)).append(text(".", GREEN));
+                            TextComponent.Builder standardComponent = text()
+                                    .append(text("You've been warped to ", ConfigurationService.getColor("positive")))
+                                    .append(text(id, ConfigurationService.getColor("warp"), TextDecoration.ITALIC))
+                                    .append(text(".", ConfigurationService.getColor("positive")));
                             Warp newWarp = new Warp(
                                     executor.getLocation(),
                                     ctx.getSource().getSender().getName(),

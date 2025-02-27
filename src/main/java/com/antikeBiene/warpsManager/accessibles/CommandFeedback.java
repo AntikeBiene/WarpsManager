@@ -2,9 +2,7 @@ package com.antikeBiene.warpsManager.accessibles;
 
 import com.antikeBiene.warpsManager.models.Warp;
 import com.antikeBiene.warpsManager.models.Waypoint;
-import com.antikeBiene.warpsManager.services.ConfigurationService;
-import com.antikeBiene.warpsManager.services.WarpsService;
-import com.antikeBiene.warpsManager.services.WaypointsService;
+import com.antikeBiene.warpsManager.services.*;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.TextComponent;
@@ -46,63 +44,63 @@ public class CommandFeedback {
     }
 
     public CommandFeedback WarpDoesntExist(String warp) {
-        this.message.append(text("The warp ", RED))
+        this.message.append(text("The warp ", negC()))
                     .append(fWarp(warp))
-                    .append(text(" doesn't exist.", RED));
+                    .append(text(" doesn't exist.", negC()));
         return this;
     }
 
     public CommandFeedback WarpingTo(String warp) {
-        this.message.append(text("Warping to ", GREEN))
+        this.message.append(text("Warping to ", posC()))
                 .append(fWarp(warp))
-                .append(text(".", GREEN));
+                .append(text(".", posC()));
         return this;
     }
 
     public CommandFeedback NoPermissionToWarp(String warp) {
-        this.message.append(text("You're missing the required group/warp permission to warp to ", RED))
+        this.message.append(text("You're missing the required group/warp permission to warp to ", negC()))
                 .append(fWarp(warp))
-                .append(text(".", RED));
+                .append(text(".", negC()));
         return this;
     }
 
     public CommandFeedback WarpCreated(String warp) {
-        this.message.append(text("Warp ", GREEN))
+        this.message.append(text("Warp ", posC()))
                 .append(fWarp(warp))
-                .append(text(" successfully created!", GREEN));
+                .append(text(" successfully created!", posC()));
         return this;
     }
 
     public CommandFeedback WarpAlreadyExists(String warp) {
-        this.message.append(text("The warp " , RED))
+        this.message.append(text("The warp " , negC()))
                 .append(fWarp(warp))
-                .append(text(" already exists!", RED));
+                .append(text(" already exists!", negC()));
         return this;
     }
 
     public CommandFeedback WarpRemoved(String warp) {
-        this.message.append(text("Warp ", GREEN))
+        this.message.append(text("Warp ", posC()))
                 .append(fWarp(warp))
-                .append(text(" successfully deleted!", GREEN));
+                .append(text(" successfully deleted!", posC()));
         return this;
     }
 
     public CommandFeedback NoPermissionToListWarps(String group) {
-        this.message.append(text("You are not permitted to list warps of ", RED))
+        this.message.append(text("You are not permitted to list warps of ", negC()))
                 .append(fGroup(group))
-                .append(text("!", RED));
+                .append(text("!", negC()));
         return this;
     }
 
     public CommandFeedback NoPermissionToListGroups() {
-        this.message.append(text("You are not permitted to list warp groups!", RED));
+        this.message.append(text("You are not permitted to list warp groups!", negC()));
         return this;
     }
 
     public CommandFeedback GroupDoesntExist(String group) {
-        this.message.append(text("The group ", RED))
+        this.message.append(text("The group ", negC()))
                 .append(fGroup(group))
-                .append(text(" doesn't exist.", RED));
+                .append(text(" doesn't exist.", negC()));
         return this;
     }
 
@@ -116,7 +114,7 @@ public class CommandFeedback {
         Integer groupPages = (int) Math.ceil((double) groupSize / pgSize);
         if (groupPages < page || page < 1) return this.ListWarpsInGroups_AccessingInvalidPage(group, page, groupPages);
         this.message.append(fGroup(group))
-                .append(text(" - Warps (" + page + "/" + groupPages + ")", WHITE));
+                .append(text(" - Warps (" + page + "/" + groupPages + ")", ntlC()));
         for (Map.Entry<String, Warp> warpEntry : WarpsService.getAllWarps().entrySet()) {
             Warp warp = warpEntry.getValue();
             String name = warpEntry.getKey();
@@ -128,10 +126,10 @@ public class CommandFeedback {
                         .append(fWarp(name)
                                 .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/warp " + name))
                                 .hoverEvent(HoverEvent.showText(text("Click to warp"))))
-                        .append(text(" | in ", GRAY))
-                        .append(text(warp.getLocation().getWorld().getName(), DARK_AQUA))
-                        .append(text(" | by ", GRAY))
-                        .append(text(warp.getCreatedBy(), DARK_AQUA));
+                        .append(text(" | in ", descC()))
+                        .append(text(warp.getLocation().getWorld().getName(), varC()))
+                        .append(text(" | by ", descC()))
+                        .append(text(warp.getCreatedBy(), varC()));
             }
         }
         return this;
@@ -146,14 +144,14 @@ public class CommandFeedback {
         if (listSize == 0) return this.NoGroups();
         Integer listPages = (int) Math.ceil((double) listSize / pgSize);
         if (listPages < page || listPages < 0) return this.AccessingInvalidPage(page, listPages);
-        this.message.append(text("Warp Groups (" + page + "/" + listPages + ")\n"));
+        this.message.append(text("Warp Groups (" + page + "/" + listPages + ")\n", ntlC()));
         for (Map.Entry<String, Set<String>> groupEntry : WarpsService.getGroups().entrySet()) {
             currentEntry++;
             if (currentEntry - 1 > pgEnd) break;
             if (currentEntry - 1 < pgStart) continue;
             this.message.append(fGroup(groupEntry.getKey()))
-                    .append(text(" (" + groupEntry.getValue().size() + " Warps)", ));
-            if (currentEntry - 1 < pgEnd && currentEntry < listSize) this.message.append(text(", ", GRAY));
+                    .append(text(" (" + groupEntry.getValue().size() + " Warps)", varC()));
+            if (currentEntry - 1 < pgEnd && currentEntry < listSize) this.message.append(text(", ", descC()));
         }
         return this;
     }
@@ -166,122 +164,122 @@ public class CommandFeedback {
                 .appendNewline()
                 .append(text(new String(new char[53]).replace("\0", "-"), DARK_GRAY))
                 .appendNewline()
-                .append(text("Group", GRAY, TextDecoration.BOLD))
-                .append(text("\n" + warp.getGroupName(), DARK_AQUA))
-                .append(text("\nLocation", GRAY, TextDecoration.BOLD))
-                .append(text("\n" + warp.getLocation().getBlockX() + " " + warp.getLocation().getBlockY() + " " + warp.getLocation().getBlockZ() + " (" + warp.getLocation().getWorld().getName() + ")", DARK_AQUA))
-                .append(text("\nCreated", GRAY, TextDecoration.BOLD))
-                .append(text("\n" + formatEpochSecs(warp.getCreated()) + " by " + warp.getCreatedBy(), DARK_AQUA))
-                .append(text("\nLast Access", GRAY, TextDecoration.BOLD))
-                .append(text("\n" + formatEpochSecs(warp.getLastAccess()) + " by " + warp.getLastAccessedBy(), DARK_AQUA))
-                .append(text("\nLast Modification", GRAY, TextDecoration.BOLD))
-                .append(text("\n" + formatEpochSecs(warp.getLastModified()) + " by " + warp.getLastModifiedBy(), DARK_AQUA))
-                .append(text("\nMessage", GRAY, TextDecoration.BOLD))
-                .append(text("\n > ", DARK_AQUA))
+                .append(text("Group", descC(), TextDecoration.BOLD))
+                .append(text("\n" + warp.getGroupName(), varC()))
+                .append(text("\nLocation", descC(), TextDecoration.BOLD))
+                .append(text("\n" + warp.getLocation().getBlockX() + " " + warp.getLocation().getBlockY() + " " + warp.getLocation().getBlockZ() + " (" + warp.getLocation().getWorld().getName() + ")", varC()))
+                .append(text("\nCreated", descC(), TextDecoration.BOLD))
+                .append(text("\n" + formatEpochSecs(warp.getCreated()) + " by " + warp.getCreatedBy(), varC()))
+                .append(text("\nLast Access", descC(), TextDecoration.BOLD))
+                .append(text("\n" + formatEpochSecs(warp.getLastAccess()) + " by " + warp.getLastAccessedBy(), varC()))
+                .append(text("\nLast Modification", descC(), TextDecoration.BOLD))
+                .append(text("\n" + formatEpochSecs(warp.getLastModified()) + " by " + warp.getLastModifiedBy(), varC()))
+                .append(text("\nMessage", descC(), TextDecoration.BOLD))
+                .append(text("\n > ", varC()))
                 .append(warp.getMessageAsComponent())
-                .append(text(" <", DARK_AQUA));
+                .append(text(" <", varC()));
         return this;
     }
 
     public CommandFeedback WarpMoved(String name, Location location) {
-        this.message.append(text("Warp ", GREEN))
+        this.message.append(text("Warp ", posC()))
                 .append(fWarp(name))
-                .append(text(" has been moved to ", GREEN))
-                .append(text(location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ() + " (" + location.getWorld().getName() + ")", DARK_AQUA))
-                .append(text(".", GREEN));
+                .append(text(" has been moved to ", posC()))
+                .append(text(location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ() + " (" + location.getWorld().getName() + ")", varC()))
+                .append(text(".", posC()));
         return this;
     }
 
     public CommandFeedback WarpRenamed(String oldname, String newname) {
-        this.message.append(text("Warp ", GREEN))
+        this.message.append(text("Warp ", posC()))
                 .append(fWarp(oldname))
-                .append(text(" has been renamed to ", GREEN))
+                .append(text(" has been renamed to ", posC()))
                 .append(fWarp(newname))
-                .append(text(".", GREEN));
+                .append(text(".", posC()));
         return this;
     }
 
     public CommandFeedback WarpMessageChanged(String warp, String message) {
-        this.message.append(text("Warp ", GREEN))
+        this.message.append(text("Warp ", posC()))
                 .append(fWarp(warp))
-                .append(text(" has a new message:\n", GREEN))
-                .append(text("> ", DARK_AQUA))
+                .append(text(" has a new message:\n", posC()))
+                .append(text("> ", varC()))
                 .append(JSONComponentSerializer.json().deserialize(message))
-                .append(text(" <", DARK_AQUA));
+                .append(text(" <", varC()));
         return this;
     }
 
     public CommandFeedback WarpGroupChanged(String warp, String newgroup) {
-        this.message.append(text("Warp ", GREEN))
+        this.message.append(text("Warp ", posC()))
                 .append(fWarp(warp))
-                .append(text(" is now in group ", GREEN))
+                .append(text(" is now in group ", posC()))
                 .append(fGroup(newgroup))
-                .append(text(".", GREEN));
+                .append(text(".", posC()));
         return this;
     }
 
     public CommandFeedback WarpAlreadyInGroup(String warp, String group) {
-        this.message.append(text("Warp ", RED))
+        this.message.append(text("Warp ", negC()))
                 .append(fWarp(warp))
-                .append(text(" is already in group ", RED))
+                .append(text(" is already in group ", negC()))
                 .append(fGroup(group))
-                .append(text(".", RED));
+                .append(text(".", negC()));
         return this;
     }
 
     public CommandFeedback NoGroups() {
-        this.message.append(text("There are no Warp groups!", RED));
+        this.message.append(text("There are no Warp groups!", negC()));
         return this;
     }
 
     public CommandFeedback WaypointDoesntExist(String wp) {
-        this.message.append(text("Waypoint ", RED))
+        this.message.append(text("Waypoint ", negC()))
                 .append(fWaypoint(wp))
-                .append(text(" doesn't exist!", RED));
+                .append(text(" doesn't exist!", negC()));
         return this;
     }
 
     public CommandFeedback WaypointRemoved(String wp) {
-        this.message.append(text("Waypoint ", GREEN))
+        this.message.append(text("Waypoint ", posC()))
                 .append(fWaypoint(wp))
-                .append(text(" successfully deleted!", GREEN));
+                .append(text(" successfully deleted!", posC()));
         return this;
     }
 
     public CommandFeedback WaypointCreated(String wp) {
-        this.message.append(text("Waypoint ", GREEN))
+        this.message.append(text("Waypoint ", posC()))
                 .append(fWaypoint(wp))
-                .append(text(" created!", GREEN));
+                .append(text(" created!", posC()));
         return this;
     }
 
     public CommandFeedback WaypointAlreadyExists(String wp) {
-        this.message.append(text("Waypoint ", RED))
+        this.message.append(text("Waypoint ", negC()))
                 .append(fWaypoint(wp))
-                .append(text(" already exists!", RED));
+                .append(text(" already exists!", negC()));
         return this;
     }
 
     public CommandFeedback GoingToWaypoint(String wp) {
-        this.message.append(text("Going to ", GREEN))
+        this.message.append(text("Going to ", posC()))
                 .append(fWaypoint(wp))
-                .append(text(".", GREEN));
+                .append(text(".", posC()));
         return this;
     }
 
     public CommandFeedback NoPermissionToGoToWaypoint(String wp) {
-        this.message.append(text("You're missing the required permission to go to ", RED))
+        this.message.append(text("You're missing the required permission to go to ", negC()))
                 .append(fWaypoint(wp))
-                .append(text("!", RED));
+                .append(text("!", negC()));
         return this;
     }
 
     public CommandFeedback WaypointDeathSet(String wp, Long days) {
-        this.message.append(text("Waypoint ", GREEN))
+        this.message.append(text("Waypoint ", posC()))
                 .append(fWaypoint(wp))
-                .append(text(" is now being killed in ", GREEN))
-                .append(text(days, DARK_AQUA))
-                .append(text(" days.", GREEN));
+                .append(text(" is now being killed in ", posC()))
+                .append(text(days, varC()))
+                .append(text(" days.", posC()));
         return this;
     }
 
@@ -289,13 +287,13 @@ public class CommandFeedback {
         if (!WaypointsService.hasWaypoint(wp)) return this.WaypointDoesntExist(wp);
         Long killedAt = WaypointsService.getWaypoint(wp).getKilledAt();
         double killedIn = Math.ceil((double) (killedAt - Instant.now().getEpochSecond()) / (3600 * 24));
-        this.message.append(text("Waypoint ", GRAY))
+        this.message.append(text("Waypoint ", descC()))
                 .append(fWaypoint(wp))
-                .append(text(" is being killed in ", GRAY))
-                .append(text(killedIn, DARK_AQUA))
-                .append(text(" days at ", GRAY))
-                .append(text(formatEpochSecs(killedAt), DARK_AQUA))
-                .append(text(".", GRAY));
+                .append(text(" is being killed in ", descC()))
+                .append(text(killedIn, varC()))
+                .append(text(" days at ", descC()))
+                .append(text(formatEpochSecs(killedAt), varC()))
+                .append(text(".", descC()));
         return this;
     }
 
@@ -308,56 +306,68 @@ public class CommandFeedback {
         if (listSize == 0) return this.NoWaypoints();
         Integer listPages = (int) Math.ceil((double) listSize / pgSize);
         if (listPages < page || listPages < 0) return this.AccessingInvalidPage(page, listPages);
-        this.message.append(text("Waypoints (" + page + "/" + listPages + ")\n"));
+        this.message.append(text("Waypoints (" + page + "/" + listPages + ")\n", ntlC()));
         for (Map.Entry<String, Waypoint> wpEntry : WaypointsService.getAllWaypoints().entrySet()) {
             currentEntry++;
             if (currentEntry - 1 > pgEnd) break;
             if (currentEntry - 1 < pgStart) continue;
             this.message.append(fWaypoint(wpEntry.getKey()))
-                    .append(text(" (in ", GRAY))
-                    .append(text(wpEntry.getValue().getLocation().getWorld().getName(), DARK_AQUA))
-                    .append(text(" by ", GRAY))
-                    .append(text(wpEntry.getValue().getCreatedBy(), DARK_AQUA))
-                    .append(text(")", GRAY));
-            if (currentEntry - 1 < pgEnd && currentEntry < listSize) this.message.append(text(" - ", GRAY));
+                    .append(text(" (in ", descC()))
+                    .append(text(wpEntry.getValue().getLocation().getWorld().getName(), varC()))
+                    .append(text(" by ", descC()))
+                    .append(text(wpEntry.getValue().getCreatedBy(), varC()))
+                    .append(text(")", descC()));
+            if (currentEntry - 1 < pgEnd && currentEntry < listSize) this.message.append(text(" - ", descC()));
         }
         return this;
 
     }
 
     public CommandFeedback NoWaypoints() {
-        this.message.append(text("There are no Waypoints!", RED));
+        this.message.append(text("There are no Waypoints!", negC()));
         return this;
     }
 
     public CommandFeedback PluginReloaded() {
-        this.message.append(text("WarpsManager has been reloaded!", GREEN, TextDecoration.BOLD));
+        this.message.append(text("WarpsManager has been reloaded!", posC(), TextDecoration.BOLD));
         return this;
     }
 
     private CommandFeedback AccessingInvalidPage(Integer page, Integer maxPages) {
-        this.message.append(text("Invalid page! Trying to access page " + page + " out of " + maxPages + ".", RED));
+        this.message.append(text("Invalid page! Trying to access page " + page + " out of " + maxPages + ".", negC()));
         return this;
     }
 
     private CommandFeedback ListWarpsInGroups_AccessingInvalidPage(String group, Integer page, Integer maxPages) {
-        this.message.append(text("Invalid page! Trying to access page " + page + " out of " + maxPages + " in ", RED))
+        this.message.append(text("Invalid page! Trying to access page " + page + " out of " + maxPages + " in ", negC()))
                 .append(fGroup(group))
-                .append(text(".", RED));
+                .append(text(".", negC()));
         return this;
     }
 
     private TextComponent fWarp(String warp) {
-        return text(warp, YELLOW, TextDecoration.ITALIC);
+        return text(warp, ConfigurationService.getColor("warp"), TextDecoration.ITALIC);
     }
 
     private TextComponent fGroup(String group) {
-        return text(group, LIGHT_PURPLE, TextDecoration.ITALIC);
+        return text(group, ConfigurationService.getColor("group"), TextDecoration.ITALIC);
     }
 
     private TextComponent fWaypoint(String waypoint) {
-        return text(waypoint, GOLD, TextDecoration.ITALIC);
+        return text(waypoint, ConfigurationService.getColor("waypoint"), TextDecoration.ITALIC);
     }
+
+    private NamedTextColor posC() {
+        return ConfigurationService.getColor("positive");
+    }
+
+    private NamedTextColor negC() { return ConfigurationService.getColor("negative"); }
+
+    private NamedTextColor descC() { return ConfigurationService.getColor("descriptive"); }
+
+    private NamedTextColor ntlC() { return ConfigurationService.getColor("neutral"); }
+
+    private NamedTextColor varC() { return ConfigurationService.getColor("variable"); }
 
     private String formatEpochSecs(Long epochSecs) {
         ZoneOffset offset = ConfigurationService.getUTCOffset();

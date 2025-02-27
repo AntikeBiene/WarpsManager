@@ -1,7 +1,6 @@
 package com.antikeBiene.warpsManager.services;
 
 import com.antikeBiene.warpsManager.WarpsManager;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
