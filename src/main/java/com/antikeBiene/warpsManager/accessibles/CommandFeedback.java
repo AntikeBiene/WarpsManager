@@ -189,7 +189,10 @@ public class CommandFeedback {
             currentEntry++;
             if (currentEntry - 1 > pgEnd) break;
             if (currentEntry - 1 < pgStart) continue;
-            this.message.append(fGroup(groupEntry.getKey()))
+            this.message.append(fGroup(groupEntry.getKey())
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/warps " + groupEntry.getKey()))
+                        .hoverEvent(HoverEvent.showText(text("Click to list warps in group")))
+                    )
                     .append(text(" (" + groupEntry.getValue().size() + " Warps)", varC()));
             if (currentEntry - 1 < pgEnd && currentEntry < listSize) this.message.append(text(", ", descC()));
         }
