@@ -1,1 +1,5 @@
 /testserver
+/.idea
+/target
+/pom.xml
+warpsmanager.iml
