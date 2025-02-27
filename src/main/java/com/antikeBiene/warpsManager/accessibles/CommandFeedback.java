@@ -10,6 +10,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Location;
@@ -18,6 +19,7 @@ import org.bukkit.command.CommandSender;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Set;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.*;
@@ -145,12 +147,12 @@ public class CommandFeedback {
         Integer listPages = (int) Math.ceil((double) listSize / pgSize);
         if (listPages < page || listPages < 0) return this.AccessingInvalidPage(page, listPages);
         this.message.append(text("Warp Groups (" + page + "/" + listPages + ")\n"));
-        for (Map.Entry<String, Integer> groupEntry : WarpsService.getGroups().entrySet()) {
+        for (Map.Entry<String, Set<String>> groupEntry : WarpsService.getGroups().entrySet()) {
             currentEntry++;
             if (currentEntry - 1 > pgEnd) break;
             if (currentEntry - 1 < pgStart) continue;
             this.message.append(fGroup(groupEntry.getKey()))
-                    .append(text(" (" + groupEntry.getValue() + " Warps)", GRAY));
+                    .append(text(" (" + groupEntry.getValue().size() + " Warps)", ));
             if (currentEntry - 1 < pgEnd && currentEntry < listSize) this.message.append(text(", ", GRAY));
         }
         return this;

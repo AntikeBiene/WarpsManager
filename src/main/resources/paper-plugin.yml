@@ -4,12 +4,6 @@ main: com.antikeBiene.warpsManager.WarpsManager
 api-version: '1.21'
 prefix: WarpsManager
 authors: [ antike_Biene ]
-dependencies:
-  server:
-    Essentials:
-      load: BEFORE
-      required: false
-      join-classpath: false
 permissions:
   warpsmanager.warp.set:
     description: Allows player to set a warp.

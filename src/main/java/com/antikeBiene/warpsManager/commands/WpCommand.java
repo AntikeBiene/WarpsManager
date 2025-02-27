@@ -14,26 +14,26 @@ public class WpCommand {
 
     public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("wp")
-                .then(Commands.argument("name", StringArgumentType.string())
+                .then(Commands.argument("id", StringArgumentType.string())
                         .suggests((ctx, builder) -> {
-                            for (String wpName : WaypointsService.getAllWaypoints().keySet())
-                                if (wpName.toLowerCase().startsWith(builder.getRemainingLowerCase()))
-                                    builder.suggest(wpName);
+                            for (String wpid : WaypointsService.getAllWaypoints().keySet())
+                                if (wpid.toLowerCase().startsWith(builder.getRemainingLowerCase()))
+                                    builder.suggest(wpid);
                             return builder.buildFuture();
                         })
                         .executes(ctx -> {
-                            String wpName = ctx.getArgument("name", String.class);
-                            if (!WaypointsService.hasWaypoint(wpName)) {
-                                CommandFeedback.to(ctx).WaypointDoesntExist(wpName).send();
+                            String wpid = ctx.getArgument("id", String.class).toLowerCase();
+                            if (!WaypointsService.hasWaypoint(wpid)) {
+                                CommandFeedback.to(ctx).WaypointDoesntExist(wpid).send();
                                 return 0;
                             }
-                            Waypoint wp = WaypointsService.getWaypoint(wpName);
+                            Waypoint wp = WaypointsService.getWaypoint(wpid);
                             if (ctx.getSource().getSender().hasPermission(BukkitPerm.USEWAYPOINT)) {
-                                CommandFeedback.to(ctx).GoingToWaypoint(wpName).send();
+                                CommandFeedback.to(ctx).GoingToWaypoint(wpid).send();
                                 ctx.getSource().getExecutor().teleport(wp.getLocation());
                                 return Command.SINGLE_SUCCESS;
                             }
-                            CommandFeedback.to(ctx).NoPermissionToGoToWaypoint(wpName).send();
+                            CommandFeedback.to(ctx).NoPermissionToGoToWaypoint(wpid).send();
                             return 0;
                         })
                 )

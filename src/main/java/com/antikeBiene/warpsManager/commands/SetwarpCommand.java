@@ -23,8 +23,8 @@ public class SetwarpCommand {
     public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("setwarp")
                 .requires(sender -> sender.getSender().hasPermission(BukkitPerm.SETWARP))
-                .then(Commands.argument("name", StringArgumentType.string())
-                    .then(Commands.argument("group", StringArgumentType.string())
+                .then(Commands.argument("id", StringArgumentType.word())
+                    .then(Commands.argument("group", StringArgumentType.word())
                         .suggests((ctx, builder) -> {
                             for (String groupName : WarpsService.getGroups().keySet())
                                 if (groupName.toLowerCase().startsWith(builder.getRemainingLowerCase()))
@@ -33,19 +33,19 @@ public class SetwarpCommand {
                         })
                         .executes(ctx -> {
                             Entity executor = ctx.getSource().getExecutor();
-                            String name = ctx.getArgument("name", String.class);
-                            TextComponent.Builder standardComponent = text().append(text("You've been warped to ", GREEN)).append(text(name, YELLOW, TextDecoration.ITALIC)).append(text(".", GREEN));
+                            String id = ctx.getArgument("id", String.class).toLowerCase();
+                            TextComponent.Builder standardComponent = text().append(text("You've been warped to ", GREEN)).append(text(id, YELLOW, TextDecoration.ITALIC)).append(text(".", GREEN));
                             Warp newWarp = new Warp(
                                     executor.getLocation(),
                                     ctx.getSource().getSender().getName(),
-                                    ctx.getArgument("group", String.class),
+                                    ctx.getArgument("group", String.class).toLowerCase(),
                                     JSONComponentSerializer.json().serialize(standardComponent.build())
                             );
-                            if (WarpsService.addWarp(name, newWarp)) {
-                                CommandFeedback.to(ctx).WarpCreated(name).send();
+                            if (WarpsService.addWarp(id, newWarp)) {
+                                CommandFeedback.to(ctx).WarpCreated(id).send();
                                 return Command.SINGLE_SUCCESS;
                             }
-                            CommandFeedback.to(ctx).WarpAlreadyExists(name).send();
+                            CommandFeedback.to(ctx).WarpAlreadyExists(id).send();
                             return 0;
                         })
                     )

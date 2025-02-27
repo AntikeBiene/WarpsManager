@@ -1,8 +1,11 @@
 package com.antikeBiene.warpsManager.utils;
 
+import com.antikeBiene.warpsManager.accessibles.CommandFeedback;
 import com.antikeBiene.warpsManager.services.WarpsService;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -28,5 +31,29 @@ public class CommandUtil {
                     builder.suggest(warpID);
         }
         return builder.buildFuture();
+    }
+
+    public static String getID(CommandContext<CommandSourceStack> ctx) {
+        String input = ctx.getArgument("key", String.class).toLowerCase();
+        String[] data = input.split(":");
+        String id;
+        if (data.length == 1) {
+            id = data[0];
+        } else if (data.length == 2) {
+            if (WarpsService.getGroupList(data[0]).contains(data[1])) {
+                id = data[1];
+            } else {
+                CommandFeedback.to(ctx).WarpNotInGroup(data[1]).send();
+                return "";
+            }
+        } else {
+            CommandFeedback.to(ctx).InvalidKey(input).send();
+            return "";
+        }
+        if (!WarpsService.hasWarp(id)) {
+            CommandFeedback.to(ctx).WarpDoesntExist(id).send();
+            return "";
+        }
+        return id;
     }
 }

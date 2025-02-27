@@ -3,6 +3,7 @@ package com.antikeBiene.warpsManager.commands;
 import com.antikeBiene.warpsManager.accessibles.BukkitPerm;
 import com.antikeBiene.warpsManager.accessibles.CommandFeedback;
 import com.antikeBiene.warpsManager.services.WarpsService;
+import com.antikeBiene.warpsManager.utils.*;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -15,19 +16,15 @@ public class WarpinfoCommand {
         return Commands.literal("warpinfo")
                 .requires(sender -> sender.getSender().hasPermission(BukkitPerm.WARPINFO))
                 .then(Commands.argument("warp", StringArgumentType.string())
-                        .suggests((ctx, builder) -> {
-                            for (String warpName : WarpsService.getAllWarps().keySet())
-                                if (warpName.toLowerCase().startsWith(builder.getRemainingLowerCase()))
-                                    builder.suggest(warpName);
-                            return builder.buildFuture();
-                        })
+                        .suggests((ctx, builder) -> CommandUtil.warpKeySuggestion(builder))
                         .executes(ctx -> {
-                            String warpName = ctx.getArgument("warp", String.class);
-                            if (!WarpsService.hasWarp(warpName)) {
-                                CommandFeedback.to(ctx).WarpDoesntExist(warpName).send();
+                            String id = CommandUtil.getID(ctx);
+                            if (id.isEmpty()) return 0;
+                            if (!WarpsService.hasWarp(id)) {
+                                CommandFeedback.to(ctx).WarpDoesntExist(id).send();
                                 return 0;
                             }
-                            CommandFeedback.to(ctx).WarpInfo(warpName).send();
+                            CommandFeedback.to(ctx).WarpInfo(id).send();
                             return Command.SINGLE_SUCCESS;
                         })
                 )

@@ -14,7 +14,7 @@ public class WarpsCommand {
 
     public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("warps")
-                .then(Commands.argument("group", StringArgumentType.string())
+                .then(Commands.argument("group", StringArgumentType.word())
                         .suggests((ctx, builder) -> {
                             for (String groupName : WarpsService.getGroups().keySet())
                                 if (groupName.toLowerCase().startsWith(builder.getRemainingLowerCase()))
@@ -22,7 +22,7 @@ public class WarpsCommand {
                             return builder.buildFuture();
                         })
                         .executes(ctx -> {
-                            String group = ctx.getArgument("group", String.class);
+                            String group = ctx.getArgument("group", String.class).toLowerCase();
                             if (!WarpsService.hasGroup(group)) {
                                 CommandFeedback.to(ctx).GroupDoesntExist(group).send();
                                 return 0;
@@ -36,7 +36,7 @@ public class WarpsCommand {
                         })
                         .then(Commands.argument("page", IntegerArgumentType.integer(1))
                                 .executes(ctx -> {
-                                    String group = ctx.getArgument("group", String.class);
+                                    String group = ctx.getArgument("group", String.class).toLowerCase();
                                     if (!WarpsService.hasGroup(group)) {
                                         CommandFeedback.to(ctx).GroupDoesntExist(group).send();
                                         return 0;

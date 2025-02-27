@@ -15,34 +15,34 @@ public class WpdeathCommand {
     public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("wpdeath")
                 .requires(sender -> sender.getSender().hasPermission(BukkitPerm.WAYPOINT_GETDEATH))
-                .then(Commands.argument("name", StringArgumentType.string())
+                .then(Commands.argument("id", StringArgumentType.string())
                         .suggests((ctx, builder) -> {
-                            for (String wpName : WaypointsService.getAllWaypoints().keySet())
-                                if (wpName.toLowerCase().startsWith(builder.getRemainingLowerCase()))
-                                    builder.suggest(wpName);
+                            for (String wpid : WaypointsService.getAllWaypoints().keySet())
+                                if (wpid.toLowerCase().startsWith(builder.getRemainingLowerCase()))
+                                    builder.suggest(wpid);
                             return builder.buildFuture();
                         })
                         .executes(ctx -> {
-                            String wpName = ctx.getArgument("name", String.class);
-                            if (!WaypointsService.hasWaypoint(wpName)) {
-                                CommandFeedback.to(ctx).WaypointDoesntExist(wpName).send();
+                            String wpid = ctx.getArgument("id", String.class).toLowerCase();
+                            if (!WaypointsService.hasWaypoint(wpid)) {
+                                CommandFeedback.to(ctx).WaypointDoesntExist(wpid).send();
                                 return 0;
                             }
-                            CommandFeedback.to(ctx).WaypointGetDeath(wpName).send();
+                            CommandFeedback.to(ctx).WaypointGetDeath(wpid).send();
                             return Command.SINGLE_SUCCESS;
 
                         })
                         .then(Commands.argument("death_in_days", IntegerArgumentType.integer(1, 180))
                                 .requires(sender -> sender.getSender().hasPermission(BukkitPerm.WAYPOINT_SETDEATH))
                                 .executes(ctx -> {
-                                    String wpName = ctx.getArgument("name", String.class);
-                                    if (!WaypointsService.hasWaypoint(wpName)) {
-                                        CommandFeedback.to(ctx).WaypointDoesntExist(wpName).send();
+                                    String wpid = ctx.getArgument("id", String.class).toLowerCase();
+                                    if (!WaypointsService.hasWaypoint(wpid)) {
+                                        CommandFeedback.to(ctx).WaypointDoesntExist(wpid).send();
                                         return 0;
                                     }
                                     Long death_in_days = (long) ctx.getArgument("death_in_days", Integer.class);
-                                    WaypointsService.getWaypoint(wpName).setKilledIn(death_in_days * 3600 * 24);
-                                    CommandFeedback.to(ctx).WaypointDeathSet(wpName, death_in_days).send();
+                                    WaypointsService.getWaypoint(wpid).setKilledIn(death_in_days * 3600 * 24);
+                                    CommandFeedback.to(ctx).WaypointDeathSet(wpid, death_in_days).send();
                                     return Command.SINGLE_SUCCESS;
                                 })
                         )

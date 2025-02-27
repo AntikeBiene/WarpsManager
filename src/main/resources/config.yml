@@ -1,4 +1,21 @@
 # ANTIKE BIENE'S WARPSMANAGER CONFIGURATION
 
 # Offset from UTC time
-utc-offset: '0'
+utc-offset: 0
+
+# Standard Lifetime for Waypoints (emitted on Creation)
+waypoint-standard-lifetime: 30
+
+# ++ Message Formatting Configuration ++
+# Available Colors:
+# BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_GRAY, BLUE, GREEN, AQUA, DARK_RED, DARK_PURPLE,
+# GRAY, RED, LIGHT_PURPLE, GOLD, YELLOW, WHITE
+
+message-positive: 'GREEN'
+message-negative: 'RED'
+message-descriptive: 'GRAY'
+message-neutral: 'WHITE'
+message-variable: 'DARK_AQUA'
+message-warp: 'YELLOW'
+message-group: 'LIGHT_PURPLE'
+message-waypoint: 'GOLD'
