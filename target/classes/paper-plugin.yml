@@ -1,5 +1,5 @@
 name: WarpsManager
-version: '1.1'
+version: '1.2'
 main: com.antikeBiene.warpsManager.WarpsManager
 api-version: '1.21'
 prefix: WarpsManager
@@ -58,4 +58,10 @@ permissions:
     default: op
   warpsmanager.admin:
     description: Allows player to access admin commands.
+    default: op
+  warpsmanager.warp.group.modify.rename:
+    description: Allows player to rename a group.
+    default: op
+  warpsmanager.warp.group.modify.merge:
+    description: Allows player to merge two groups.
     default: op

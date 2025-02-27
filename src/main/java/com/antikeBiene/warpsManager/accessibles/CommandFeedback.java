@@ -415,6 +415,24 @@ public class CommandFeedback {
         return this;
     }
 
+    public CommandFeedback GroupMerged(String oldGroup, String newGroup) {
+        this.message.append(text("Group ", posC()))
+                .append(fGroup(oldGroup))
+                .append(text(" has been merged to group ", posC()))
+                .append(fGroup(newGroup))
+                .append(text(".", posC()));
+        return this;
+    }
+
+    public CommandFeedback GroupRenamed(String group, String newName) {
+        this.message.append(text("Group ", posC()))
+                .append(fGroup(group))
+                .append(text(" has been renamed to ", posC()))
+                .append(fGroup(newName))
+                .append(text(".", posC()));
+        return this;
+    }
+
     private CommandFeedback AccessingInvalidPage(Integer page, Integer maxPages) {
         this.message.append(text("Invalid page! Trying to access page " + page + " out of " + maxPages + ".", negC()));
         return this;

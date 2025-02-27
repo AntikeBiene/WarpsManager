@@ -42,6 +42,7 @@ public class GroupmodifyCommand {
                                                 WarpsService.enlargeGroup(newName, warpID);
                                             }
                                             WarpsService.removeGroup(group);
+                                            CommandFeedback.to(ctx).GroupRenamed(group, newName).send();
                                             return Command.SINGLE_SUCCESS;
                                         })
                                 )
@@ -73,6 +74,7 @@ public class GroupmodifyCommand {
                                                 WarpsService.enlargeGroup(newGroup, warpID);
                                             }
                                             WarpsService.removeGroup(group);
+                                            CommandFeedback.to(ctx).GroupMerged(group, newGroup).send();
                                             return Command.SINGLE_SUCCESS;
                                         })
                                 )

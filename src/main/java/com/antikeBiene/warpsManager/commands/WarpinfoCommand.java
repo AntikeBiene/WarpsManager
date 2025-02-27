@@ -15,7 +15,7 @@ public class WarpinfoCommand {
     public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("warpinfo")
                 .requires(sender -> sender.getSender().hasPermission(BukkitPerm.WARPINFO))
-                .then(Commands.argument("warp", StringArgumentType.word())
+                .then(Commands.argument("key", StringArgumentType.word())
                         .suggests((ctx, builder) -> CommandUtil.warpKeySuggestion(builder))
                         .executes(ctx -> {
                             String id = CommandUtil.getID(ctx);
