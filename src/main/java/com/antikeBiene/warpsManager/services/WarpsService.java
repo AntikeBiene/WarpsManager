@@ -87,6 +87,12 @@ public class WarpsService {
         } else groups.put(group, idSet);
     }
 
+    public static Boolean removeGroup(String group) {
+        if (!hasGroup(group)) return false;
+        groups.remove(group);
+        return true;
+    }
+
     public static Boolean hasGroup(String group) {
         return groups.containsKey(group);
     }

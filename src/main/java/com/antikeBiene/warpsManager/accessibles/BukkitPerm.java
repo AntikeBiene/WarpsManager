@@ -20,5 +20,6 @@ public class BukkitPerm {
     public static String WAYPOINT_GETDEATH = "warpsmanager.waypoint.death.get";
     public static String LIST_WAYPOINTS = "warpsmanager.waypoint.list";
     public static String ADMIN = "warpsmanager.admin";
-
+    public static String GROUPMODIFY_RENAME = "warpsmanager.warp.group.modify.rename";
+    public static String GROUPMODIFY_MERGE = "warpsmanager.warp.group.modify.merge";
 }

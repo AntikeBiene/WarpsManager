@@ -408,6 +408,13 @@ public class CommandFeedback {
         return this;
     }
 
+    public CommandFeedback GroupAlreadyExists(String group) {
+        this.message.append(text("The group " , negC()))
+                .append(fGroup(group))
+                .append(text(" already exists!", negC()));
+        return this;
+    }
+
     private CommandFeedback AccessingInvalidPage(Integer page, Integer maxPages) {
         this.message.append(text("Invalid page! Trying to access page " + page + " out of " + maxPages + ".", negC()));
         return this;

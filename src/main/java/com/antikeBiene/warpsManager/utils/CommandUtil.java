@@ -24,7 +24,8 @@ public class CommandUtil {
         } else if (data.length == 1) {
             for (String groupID : WarpsService.getAllGroupIds())
                 if (groupID.toLowerCase().startsWith(input))
-                    builder.suggest(groupID + ".");
+                    for (String warpID : WarpsService.getGroupList(groupID))
+                        builder.suggest(groupID + "." + warpID);
             for (String warpID : WarpsService.getAllWarpIds())
                 if (warpID.toLowerCase().startsWith(input))
                     builder.suggest(warpID);
