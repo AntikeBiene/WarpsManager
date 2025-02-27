@@ -1,0 +1,67 @@
+name: WarpsManager
+version: '1.0'
+main: com.antikeBiene.warpsManager.WarpsManager
+api-version: '1.21'
+prefix: WarpsManager
+authors: [ antike_Biene ]
+dependencies:
+  server:
+    Essentials:
+      load: BEFORE
+      required: false
+      join-classpath: false
+permissions:
+  warpsmanager.warp.set:
+    description: Allows player to set a warp.
+    default: op
+  warpsmanager.warp.delete:
+    description: Allows player to delete a warp.
+    default: op
+  warpsmanager.warp.use.*:
+    description: Allows player to use all warps.
+    default: op
+  warpsmanager.warp.group.use.*:
+    description: Allows player to use the warps of all groups.
+    default: op
+  warpsmanager.warp.group.listall:
+    description: Allows player to list warp groups.
+    default: op
+  warpsmanager.warp.group.list.*:
+    description: Allows player to list all warps of all groups.
+    default: op
+  warpsmanager.warp.info:
+    description: Allows player to retrieve information on a warp.
+    default: op
+  warpsmanager.warp.modify.move:
+    description: Allows player to move the location of a warp.
+    default: op
+  warpsmanager.warp.modify.rename:
+    description: Allows player to rename a warp.
+    default: op
+  warpsmanager.warp.modify.message:
+    description: Allows player to change the message of a warp.
+    default: op
+  warpsmanager.warp.modify.group:
+    description: Allows player to change the group of a warp.
+    default: op
+  warpsmanager.waypoint.use:
+    description: Allows player to use waypoints.
+    default: op
+  warpsmanager.waypoint.set:
+    description: Allows player to set waypoints.
+    default: op
+  warpsmanager.waypoint.delete:
+    description: Allows player to delete waypoints.
+    default: op
+  warpsmanager.waypoint.death.set:
+    description: Allows player to set the death of a waypoint.
+    default: op
+  warpsmanager.waypoint.death.get:
+    description: Allows player to get the death of a waypoint.
+    default: op
+  warpsmanager.waypoint.list:
+    description: Allows player to list waypoints.
+    default: op
+  warpsmanager.admin:
+    description: Allows player to access admin commands.
+    default: op
