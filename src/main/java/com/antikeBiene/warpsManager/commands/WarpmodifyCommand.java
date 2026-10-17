@@ -56,7 +56,7 @@ public class WarpmodifyCommand {
                                         .executes(ctx -> {
                                             String id = CommandUtil.getID(ctx);
                                             if (id.isEmpty()) return 0;
-                                            String newID = ctx.getArgument("newID", String.class).toLowerCase();
+                                            String newID = ctx.getArgument("newID", String.class).toLowerCase().replace(".", "_");
                                             if (WarpsService.hasWarp(newID)) {
                                                 CommandFeedback.to(ctx).WarpAlreadyExists(newID).send();
                                                 return 0;
@@ -98,7 +98,7 @@ public class WarpmodifyCommand {
                                         .executes(ctx -> {
                                             String id = CommandUtil.getID(ctx);
                                             if (id.isEmpty()) return 0;
-                                            String groupID = ctx.getArgument("group", String.class).toLowerCase();
+                                            String groupID = ctx.getArgument("group", String.class).toLowerCase().replace(".", "_");
                                             if (WarpsService.getGroupList(groupID).contains(id)) {
                                                 CommandFeedback.to(ctx).WarpAlreadyInGroup(id, groupID).send();
                                                 return 0;

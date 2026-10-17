@@ -63,7 +63,7 @@ public class GroupmodifyCommand {
                                                 CommandFeedback.to(ctx).GroupDoesntExist(group).send();
                                                 return 0;
                                             }
-                                            if (!WarpsService.hasWarp(newGroup)) {
+                                            if (!WarpsService.hasGroup(newGroup)) {
                                                 CommandFeedback.to(ctx).GroupDoesntExist(newGroup).send();
                                                 return 0;
                                             }

@@ -72,10 +72,10 @@ public final class WarpsManager extends JavaPlugin {
             commands.registrar().register(SetwpCommand.build());
             commands.registrar().register(WpCommand.build());
             commands.registrar().register(DelwpCommand.build());
-            commands.registrar().register(WaypointsCommand.build());
+            commands.registrar().register(WplistCommand.build());
             commands.registrar().register(WpdeathCommand.build());
             commands.registrar().register(WarpsmanagerCommand.build());
-            commands.registrar().register(WarplistCommand.build());
+            commands.registrar().register(AllwarpsCommand.build());
             commands.registrar().register(GroupmodifyCommand.build());
         });
     }

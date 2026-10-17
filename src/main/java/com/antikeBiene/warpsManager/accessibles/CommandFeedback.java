@@ -125,7 +125,7 @@ public class CommandFeedback {
                 if (currentEntry - 1 < pgStart) continue;
                 this.message.append(text("\n"))
                         .append(fWarp(name)
-                                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/warp " + warp.getGroupName() + ":" + name))
+                                .clickEvent(ClickEvent.runCommand("/warp " + warp.getGroupName() + "." + name))
                                 .hoverEvent(HoverEvent.showText(text("Click to warp"))))
                         .append(text(" | in ", descC()))
                         .append(text(warp.getLocation().getWorld().getName(), varC()))
@@ -154,11 +154,11 @@ public class CommandFeedback {
             if (currentEntry - 1 < pgStart) continue;
             this.message.append(text("\n"))
                     .append(fWarp(name)
-                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/warp " + warp.getGroupName() + ":" + name))
+                            .clickEvent(ClickEvent.runCommand("/warp " + warp.getGroupName() + "." + name))
                             .hoverEvent(HoverEvent.showText(text("Click to warp"))))
                     .append(text(" (", descC()))
                     .append(fGroup(warp.getGroupName())
-                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/warps " + warp.getGroupName()))
+                            .clickEvent(ClickEvent.runCommand("/warps " + warp.getGroupName()))
                             .hoverEvent(HoverEvent.showText(text("Click to show all warps in group")))
                     )
                     .append(text(")", descC()))
@@ -190,7 +190,7 @@ public class CommandFeedback {
             if (currentEntry - 1 > pgEnd) break;
             if (currentEntry - 1 < pgStart) continue;
             this.message.append(fGroup(groupEntry.getKey())
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/warps " + groupEntry.getKey()))
+                        .clickEvent(ClickEvent.runCommand("/warps " + groupEntry.getKey()))
                         .hoverEvent(HoverEvent.showText(text("Click to list warps in group")))
                     )
                     .append(text(" (" + groupEntry.getValue().size() + " Warps)", varC()));
@@ -355,7 +355,10 @@ public class CommandFeedback {
             if (currentEntry - 1 > pgEnd) break;
             if (currentEntry - 1 < pgStart) continue;
             this.message.appendNewline()
-                    .append(fWaypoint(wpEntry.getKey()))
+                    .append(fWaypoint(wpEntry.getKey())
+                            .clickEvent(ClickEvent.runCommand("/wp " + wpEntry.getKey()))
+                            .hoverEvent(HoverEvent.showText(text("Click to teleport to Waypoint")))
+                    )
                     .append(text(" (in ", descC()))
                     .append(text(wpEntry.getValue().getLocation().getWorld().getName(), varC()))
                     .append(text(" by ", descC()))

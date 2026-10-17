@@ -8,10 +8,10 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 
-public class WaypointsCommand {
+public class WplistCommand {
 
     public static LiteralCommandNode<CommandSourceStack> build() {
-        return Commands.literal("waypoints")
+        return Commands.literal("wplist")
                 .requires(sender -> sender.getSender().hasPermission(BukkitPerm.LIST_WAYPOINTS))
                 .executes(ctx -> {
                     CommandFeedback.to(ctx).ListWaypoints(1).send();

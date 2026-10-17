@@ -8,10 +8,10 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 
-public class WarplistCommand {
+public class AllwarpsCommand {
 
     public static LiteralCommandNode<CommandSourceStack> build() {
-        return Commands.literal("warplist")
+        return Commands.literal("allwarps")
                 .requires(sender -> sender.getSender().hasPermission(BukkitPerm.EXT_LIST_WARPS + "*"))
                 .executes(ctx -> {
                     CommandFeedback.to(ctx).ListAllWarps(1).send();
